@@ -14,9 +14,10 @@ def totale():
     "total-confirmed":
     [data['Countries'][i]['TotalConfirmed'] for i in range(len(data['Countries']))]})
     #print(df.head())
-    x = df['total-confirmed'].max()
-    y = df['total-confirmed'].min()
-
+    #high_low_cases = data["Countries"]["TotalConfirmed"]
+    x = max(df['total-confirmed'])
+    y = min(df['total-confirmed'])
+    
    
 
 
@@ -34,13 +35,13 @@ def scraper():
     #response = requests.get('https://www.who.int/')
     response = requests.get('https://www.bmj.com/coronavirus')
     soup = BeautifulSoup(response.text, "html.parser")
-    tags = soup.find(class_="covid-19-2-cols pane-jnl-bmj-views-channels-latest-home-page")
+    tags = soup.find(class_="css-1wdyrrm")
     tags = tags.findAll('a')
     for tag in tags:
         res = tag['href']
         time.sleep(1)
-        print(res)
-        return ("for additional resources check out the following links:"+ '\n'+ res)
+    print(res)
+    return ("for additional resources check out the following links:"+ '\n'+ res)
 
 
 
@@ -61,6 +62,7 @@ def main():
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
     logger = logging.getLogger(__name__)
+    print(logger)
     dp.add_handler(CommandHandler('start',casez))
     dp.add_handler(CommandHandler('resource',casez2))
     #dp.add_handler(CommandHandler('greet',greet))
@@ -68,7 +70,6 @@ def main():
     
     updater.start_polling()
     updater.idle()
-
 
 if __name__ =="__main__":
     main()
